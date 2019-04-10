@@ -8,6 +8,7 @@ import VueCookies from 'vue-cookies'
 import 'muse-ui/dist/muse-ui.css'
 import 'material-icons/iconfont/material-icons.css'
 import 'normalize.css'
+import './assets/css/index.css'
 
 Vue.use(MuseUI)
 Vue.use(VueCookies)

@@ -47,7 +47,7 @@
       <mu-tab>留言</mu-tab>
     </mu-tabs>
     <!-- page main -->
-    <div>
+    <div class="main">
       <div v-if="active === 0">
         <mu-list textline="three-line" style="padding: 0">
           <mu-list-item v-for="(postItem, index) in postList" :ripple="false" button :key="index" @click="linkTo('post')">
@@ -57,14 +57,15 @@
                 {{ postItem.summary }}
               </mu-list-item-sub-title>
               <mu-list-item-sub-title style="text-align: center;">
-                {{ postItem.createBy }}
+                {{ postItem.createAt }}
               </mu-list-item-sub-title>
             </mu-list-item-content>
           </mu-list-item>
         </mu-list>
       </div>
       <div v-if="active === 1">
-        <mu-list style="padding: 0">
+        <mu-text-field v-if="isLogin && isAdmin" style="margin: 0 auto; width: 100%;" class="activity-input"></mu-text-field>
+        <mu-list v-if="isLogin" style="padding: 0">
           <mu-list-item v-for="(activityItem, index) in activityList" :ripple="false" button :key="index" @click="linkTo('activity')">
             <mu-list-item-content>
               <mu-list-item-title style="text-align: center;">{{ activityItem.content }}</mu-list-item-title>
@@ -74,9 +75,13 @@
             </mu-list-item-content>
           </mu-list-item>
         </mu-list>
+        <div class="un-login" v-else>
+          未登录不能够浏览此内容，请登录
+        </div>
       </div>
       <div v-if="active === 2">
-        <mu-list textline="two-line" style="padding: 0">
+        <mu-text-field v-if="isLogin && !isAdmin" style="margin: 0 auto; width: 100%;" class="activity-input"></mu-text-field>
+        <mu-list v-if="isLogin" textline="two-line" style="padding: 0">
           <mu-list-item v-for="(messageItem, index) in messageList" :ripple="false" button :key="index" @click="linkTo('message')">
             <mu-list-item-content>
               <mu-list-item-title style="text-align: center;">{{ messageItem.username }}</mu-list-item-title>
@@ -86,7 +91,13 @@
             </mu-list-item-content>
           </mu-list-item>
         </mu-list>
+        <div class="un-login" v-else>
+          未登录不能够浏览此内容，请登录
+        </div>
       </div>
+    </div>
+    <div class="footer">
+      - Blog of IKunDefined -
     </div>
     <!-- login dialog -->
     <mu-dialog width="360" transition="slide-bottom" fullscreen :open.sync="isLoginDialogShow">
@@ -137,8 +148,9 @@
     </mu-dialog>
     <mu-drawer :open.sync="isPersonalDrawerShow" :docked="isDocked" :right="drawerPosition === 'right'">
       <mu-list>
-        <mu-list-item v-if="isLogin && isAdmin">
+        <mu-list-item v-if="isLogin && isAdmin" button href="http://localhost:8081/">
           <mu-list-item-action>
+            <mu-icon value="perm_identity"></mu-icon>
           </mu-list-item-action>
           <mu-list-item-title>
             进入管理空间
@@ -205,13 +217,7 @@ export default {
           content: '我饿了...'
         }
       ],
-      postList: [
-        {
-          title: '近况概述',
-          summary: '做了个个人博客，写一些到底是怎么做的',
-          createBy: '2019-04-05 15:45:39'
-        }
-      ],
+      postList: [],
       isLogin: false,
       isAdmin: false,
       username: '',
@@ -229,6 +235,7 @@ export default {
       this.isAdmin = userinfo.isAdmin
       this.username = userinfo.username
     }
+    this.getPostList()
   },
   methods: {
     linkTo (page) {
@@ -325,8 +332,12 @@ export default {
       this.isPersonalDrawerShow = false
     },
     getPostList () {
-      axios.get(`${this.url}post/message`).then(res => {
-        console.log(res)
+      axios.get(`${this.url}post/list`).then(res => {
+        if (res.data.code === 0) {
+          this.postList = res.data.result
+        } else {
+          Toast.warning(res.data.message)
+        }
       })
     },
     getActivityList () {
@@ -336,7 +347,6 @@ export default {
     },
     getMessageList () {
       axios.get(`${this.url}message/list`).then(res => {
-        console.log(res)
       })
     }
   }
@@ -347,5 +357,29 @@ export default {
 .sub-nav {
   top: 50%;
   transform: translateY(-50%);
+}
+
+.main {
+  margin-bottom: 80px;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+  width: 100%;
+  background: #fff;
+  border-top: 1px solid #f5f5f5;
+}
+
+.un-login {
+  text-align: center;
+  padding: 20px;
+}
+
+.activity-input >>> input {
+  text-align: center;
 }
 </style>
