@@ -50,7 +50,7 @@
     <div class="main">
       <div v-if="active === 0">
         <mu-list textline="three-line" style="padding: 0">
-          <mu-list-item v-for="(postItem, index) in postList" :ripple="false" button :key="index" @click="linkTo('post')">
+          <mu-list-item class="list-item" v-for="(postItem, index) in postList" :ripple="false" button :key="index" @click="linkTo('post')">
             <mu-list-item-content>
               <mu-list-item-title style="text-align: center;">{{ postItem.title }}</mu-list-item-title>
               <mu-list-item-sub-title style="text-align: center;">
@@ -64,14 +64,11 @@
         </mu-list>
       </div>
       <div v-if="active === 1">
-        <mu-text-field v-if="isLogin && isAdmin" style="margin: 0 auto; width: 100%;" class="activity-input"></mu-text-field>
+        <mu-text-field v-if="isLogin && isAdmin" v-model="activity.content" @keypress.enter="createActivity" style="margin: 0 auto; width: 100%;" class="activity-input"></mu-text-field>
         <mu-list v-if="isLogin" style="padding: 0">
-          <mu-list-item v-for="(activityItem, index) in activityList" :ripple="false" button :key="index" @click="linkTo('activity')">
+          <mu-list-item class="list-item" v-for="(activityItem, index) in activityList" :ripple="false" button :key="index" @click="linkTo('activity')">
             <mu-list-item-content>
               <mu-list-item-title style="text-align: center;">{{ activityItem.content }}</mu-list-item-title>
-              <mu-list-item-sub-title style="text-align: center;">
-                {{ activityItem.createAt }}
-              </mu-list-item-sub-title>
             </mu-list-item-content>
           </mu-list-item>
         </mu-list>
@@ -80,9 +77,9 @@
         </div>
       </div>
       <div v-if="active === 2">
-        <mu-text-field v-if="isLogin && !isAdmin" style="margin: 0 auto; width: 100%;" class="activity-input"></mu-text-field>
+        <mu-text-field v-if="isLogin && !isAdmin" @keypress.enter="createMessage" v-model="message.content" style="margin: 0 auto; width: 100%;" class="activity-input"></mu-text-field>
         <mu-list v-if="isLogin" textline="two-line" style="padding: 0">
-          <mu-list-item v-for="(messageItem, index) in messageList" :ripple="false" button :key="index" @click="linkTo('message')">
+          <mu-list-item class="list-item" v-for="(messageItem, index) in messageList" :ripple="false" button :key="index" @click="linkTo('message')">
             <mu-list-item-content>
               <mu-list-item-title style="text-align: center;">{{ messageItem.username }}</mu-list-item-title>
               <mu-list-item-sub-title style="text-align: center;">
@@ -197,26 +194,8 @@ export default {
         password: '',
         repassword: ''
       },
-      activityList: [
-        {
-          content: '什么事情都麻烦别人，不会自己做么'
-        },
-        {
-          content: '有问题自己解决'
-        },
-        {
-          content: '今天天气挺好的，所以我心情也很好'
-        },
-        {
-          content: '天气开始热起来了啊'
-        }
-      ],
-      messageList: [
-        {
-          username: '堇梁',
-          content: '我饿了...'
-        }
-      ],
+      activityList: [],
+      messageList: [],
       postList: [],
       isLogin: false,
       isAdmin: false,
@@ -224,7 +203,16 @@ export default {
       userId: '',
       isPersonalDrawerShow: false,
       drawerPosition: 'right',
-      isDocked: false
+      isDocked: false,
+      activity: {
+        content: '',
+        createAt: ''
+      },
+      message: {
+        content: '',
+        createAt: '',
+        username: ''
+      }
     }
   },
   created () {
@@ -236,6 +224,8 @@ export default {
       this.username = userinfo.username
     }
     this.getPostList()
+    this.getActivityList()
+    this.getMessageList()
   },
   methods: {
     linkTo (page) {
@@ -342,11 +332,45 @@ export default {
     },
     getActivityList () {
       axios.get(`${this.url}activity/list`).then(res => {
-        console.log(res)
+        if (res.data.code === 0) {
+          this.activityList = res.data.result
+        } else {
+        }
       })
     },
     getMessageList () {
       axios.get(`${this.url}message/list`).then(res => {
+        if (res.data.code === 0) {
+          this.messageList = res.data.result
+        } else {
+        }
+      })
+    },
+    createActivity () {
+      let activity = this.activity
+      activity.createAt = new Date()
+      axios.post(`${this.url}activity/create`, { activity }).then(res => {
+        if (res.data.code === 0) {
+          this.activity.content = ''
+          this.getActivityList()
+          Toast.success(res.data.message)
+        } else {
+          Toast.success(res.data.message)
+        }
+      })
+    },
+    createMessage () {
+      let message = this.message
+      message.createAt = new Date()
+      message.username = this.$cookies.get('userinfo').username
+      axios.post(`${this.url}message/create`, { message }).then(res => {
+        if (res.data.code === 0) {
+          this.message.content = ''
+          this.getMessageList()
+          Toast.success(res.data.message)
+        } else {
+          Toast.success(res.data.message)
+        }
       })
     }
   }
@@ -381,5 +405,9 @@ export default {
 
 .activity-input >>> input {
   text-align: center;
+}
+
+.list-item {
+  border-bottom: 1px solid #f5f5f5;
 }
 </style>
