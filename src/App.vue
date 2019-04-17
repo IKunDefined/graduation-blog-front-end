@@ -238,6 +238,7 @@ export default {
           this.$cookies.set('userinfo', res.data.userinfo)
           Toast.success(res.data.message)
           this.hideDialog('login')
+          window.location.reload()
         } else {
           Toast.warning(res.data.message)
         }
@@ -262,6 +263,7 @@ export default {
       this.isLogin = false
       this.$cookies.remove('userinfo')
       this.isPersonalDrawerShow = false
+      window.location.reload()
       Toast.success('注销成功')
     },
     confirm () {

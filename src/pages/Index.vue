@@ -16,11 +16,17 @@
       </mu-carousel-item>
     </mu-carousel>
     <!-- page tab -->
-    <mu-tabs :value.sync="active" inverse color="secondary" text-color="rgba(0, 0, 0, .54)"  center>
+    <mu-tabs
+      :value.sync="active"
+      inverse color="secondary"
+      text-color="rgba(0, 0, 0, .54)"
+      center
+    >
       <mu-tab>文章</mu-tab>
       <mu-tab>动态</mu-tab>
       <mu-tab>留言</mu-tab>
       <mu-tab>视频</mu-tab>
+      <mu-tab>作品</mu-tab>
     </mu-tabs>
     <!-- page main -->
     <div class="bottom-layout">
@@ -29,7 +35,15 @@
           <mu-list v-if="postList.length !== 0" textline="three-line" style="padding: 0">
             <mu-list-item class="list-item" v-for="(postItem, index) in postList" :ripple="false" button :key="index" @click="linkTo('post', postItem._id)">
               <mu-list-item-content>
-                <mu-list-item-title style="text-align: center;">{{ postItem.title }}</mu-list-item-title>
+                <mu-list-item-title style="text-align: center;">
+                  {{ postItem.title }}
+                  <mu-badge
+                    v-if="activityList.length === (index + 2)"
+                    style="margin-left: 10px;"
+                    content="new"
+                    color="secondary"
+                  ></mu-badge>
+                </mu-list-item-title>
                 <mu-list-item-sub-title style="text-align: center;">
                   {{ postItem.summary }}
                 </mu-list-item-sub-title>
@@ -42,11 +56,40 @@
           <div v-else class="no-content">暂时没有文章</div>
         </div>
         <div v-if="active === 1">
-          <mu-text-field v-if="isLogin && isAdmin" v-model="activity.content" @keypress.enter="createActivity" placeholder="说说看自己的心情或者最近发生了什么事情吧" style="margin: 0 auto; width: 100%;" class="activity-input"></mu-text-field>
+          <mu-text-field
+            v-if="isLogin && isAdmin"
+            v-model="activity.content"
+            @keypress.enter="createActivity"
+            placeholder="说说看自己的心情或者最近发生了什么事情吧"
+            style="margin: 0 auto; width: 100%;"
+            class="activity-input"
+          ></mu-text-field>
           <mu-list v-if="isLogin" style="padding: 0">
-            <mu-list-item class="list-item" v-for="(activityItem, index) in activityList" :ripple="true" button :key="index" @click="linkTo('activity', activityItem._id)">
+            <mu-list-item
+              class="list-item"
+              v-for="(activityItem, index) in activityList"
+              :ripple="true"
+              button
+              :key="index"
+              @click="linkTo('activity', activityItem._id)"
+            >
               <mu-list-item-content>
-                <mu-list-item-title style="text-align: center;">{{ activityItem.content }}<span v-if="isAdmin" style="color: #ccc; margin-left: 10px; cursor: pointer; position: relative; z-index: 10" @click.stop="confirm(activityItem._id)">删除</span></mu-list-item-title>
+                <mu-list-item-title style="text-align: center;">
+                  {{ activityItem.content }}
+                  <mu-badge
+                    v-if="activityList.length === (index + 2)"
+                    style="margin-left: 10px;"
+                    content="new"
+                    color="secondary"
+                  ></mu-badge>
+                  <span
+                    v-if="isAdmin"
+                    style="color: #ccc; margin-left: 10px; cursor: pointer; position: relative; z-index: 10"
+                    @click.stop="confirm(activityItem._id)"
+                  >
+                    删除
+                  </span>
+                </mu-list-item-title>
               </mu-list-item-content>
             </mu-list-item>
           </mu-list>
@@ -65,6 +108,12 @@
                 <mu-list-item-title style="text-align: center;">{{ messageItem.username }}</mu-list-item-title>
                 <mu-list-item-sub-title style="text-align: center;">
                   {{ messageItem.content }}
+                  <mu-badge
+                    v-if="activityList.length === (index + 2)"
+                    style="margin-left: 10px;"
+                    content="new"
+                    color="secondary"
+                  ></mu-badge>
                 </mu-list-item-sub-title>
               </mu-list-item-content>
             </mu-list-item>
@@ -84,6 +133,11 @@
           </div>
           <div class="un-login" v-else>
             未登录不能够浏览此内容，请登录
+          </div>
+        </div>
+        <div v-if="active === 4">
+          <div class="no-content">
+            暂时没有内容
           </div>
         </div>
       </div>
