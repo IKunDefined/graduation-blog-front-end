@@ -74,10 +74,31 @@
         </mu-form>
       </div>
     </mu-dialog>
+    <!-- personal dialog -->
+    <mu-dialog width="360" transition="slide-right" fullscreen :open.sync="isPersonalDialogShow">
+      <mu-appbar color="primary" title="个人信息修改">
+        <mu-button slot="right" icon @click="hideDialog('personal')">
+          <mu-icon value="close"></mu-icon>
+        </mu-button>
+      </mu-appbar>
+      <div style="padding: 24px;">
+        <div>修改头像</div>
+        <div>修改用户名</div>
+        <div>修改密码</div>
+      </div>
+    </mu-dialog>
     <!-- personal sidebar -->
     <mu-drawer :open.sync="isPersonalDrawerShow" :docked="isDocked" :right="drawerPosition === 'right'">
       <mu-list>
-        <mu-list-item v-if="isLogin && isAdmin" button href="http://localhost:8081/">
+        <mu-list-item v-if="isLogin" button @click="isPersonalDialogShow = true">
+          <mu-list-item-action>
+            <mu-icon value="account_circle"></mu-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>
+            修改个人资料
+          </mu-list-item-title>
+        </mu-list-item>
+        <mu-list-item v-if="isLogin && isAdmin" button href="http://localhost:3000/">
           <mu-list-item-action>
             <mu-icon value="perm_identity"></mu-icon>
           </mu-list-item-action>
@@ -85,7 +106,7 @@
             进入管理空间
           </mu-list-item-title>
         </mu-list-item>
-        <mu-list-item button @click="logout">
+        <mu-list-item button @click="confirm">
           <mu-list-item-action>
             <mu-icon value="power_settings_new"></mu-icon>
           </mu-list-item-action>
@@ -110,13 +131,14 @@ export default {
   name: 'App',
   data () {
     return {
-      url: 'http://localhost:3000/blog/api/',
+      url: 'http://localhost:4000/blog/api/',
       isLogin: false,
       isAdmin: false,
       username: '',
       userId: '',
       isLoginDialogShow: false,
       isRegisterDialogShow: false,
+      isPersonalDialogShow: false,
       // 登录 | 注册 弹框显示控制开关
       labelPosition: 'top',
       form: {
@@ -179,6 +201,9 @@ export default {
         case 'register':
           this.isRegisterDialogShow = true
           break
+        case 'personal':
+          this.isPersonalDialogShow = true
+          break
         default:
           break
       }
@@ -190,6 +215,9 @@ export default {
           break
         case 'register':
           this.isRegisterDialogShow = false
+          break
+        case 'personal':
+          this.isPersonalDialogShow = false
           break
         default:
           break
@@ -235,6 +263,13 @@ export default {
       this.$cookies.remove('userinfo')
       this.isPersonalDrawerShow = false
       Toast.success('注销成功')
+    },
+    confirm () {
+      this.$confirm('是否退出登录', '注意').then(res => {
+        if (res.result) {
+          this.logout()
+        }
+      })
     }
   }
 }

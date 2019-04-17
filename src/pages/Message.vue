@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     getMessage () {
-      axios.get(`http://localhost:3000/blog/api/message/query?id=${this.messageId}`).then(res => {
+      axios.get(`http://localhost:4000/blog/api/message/query?id=${this.messageId}`).then(res => {
         if (res.data.code === 0) {
           this.message = res.data.message
         } else {

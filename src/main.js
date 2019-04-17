@@ -9,9 +9,12 @@ import 'muse-ui/dist/muse-ui.css'
 import 'material-icons/iconfont/material-icons.css'
 import 'normalize.css'
 import './assets/css/index.css'
+import './assets/css/font/iconfont.css'
+import Message from 'muse-ui-message'
 
 Vue.use(MuseUI)
 Vue.use(VueCookies)
+Vue.use(Message)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

@@ -5,11 +5,14 @@
         <h1>{{ post.title }}</h1>
         <div class="info">
           <span>发布时间：{{ post.createAt }}</span>
+          <span>分类：{{ post.category.name }}</span>
         </div>
         <div class="content">
           {{ post.content }}
         </div>
-        <div class="tag"></div>
+        <div class="tag">
+          <mu-chip v-for="(item, index) in post.tags" :key="index" color="primary">{{ item.name }}</mu-chip>
+        </div>
       </div>
       <mu-card style="width: 30%;">
         <mu-card-header title="Myron Avatar" sub-title="sub title">
@@ -31,6 +34,9 @@
       </mu-card>
     </div>
     <div class="footer">
+      <!-- <span class="iconfont" style="font-size: 20px; position: relative; bottom: 2px; cursor: pointer;">&#xe709;</span>
+      <span class="iconfont" style="font-size: 25px; cursor: pointer;">&#xe608;</span>
+      <span class="iconfont" style="font-size: 25px; position: relative; bottom: 1px; cursor: pointer;">&#xe64e;</span> -->
       - Blog of IKunDefined -
     </div>
   </div>
@@ -59,7 +65,7 @@ export default {
   },
   methods: {
     getPost () {
-      axios.get(`http://localhost:3000/blog/api/post/query?id=${this.postId}`).then(res => {
+      axios.get(`http://localhost:4000/blog/api/post/query?id=${this.postId}`).then(res => {
         if (res.data.code === 0) {
           this.post = res.data.post
         } else {
@@ -124,6 +130,11 @@ export default {
 }
 
 .post .info {
+  display: flex;
+  justify-content: center;
+}
+
+.tag {
   display: flex;
   justify-content: center;
 }

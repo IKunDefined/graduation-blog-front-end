@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     getActivity () {
-      axios.get(`http://localhost:3000/blog/api/activity/query?id=${this.activityId}`).then(res => {
+      axios.get(`http://localhost:4000/blog/api/activity/query?id=${this.activityId}`).then(res => {
         if (res.data.code === 0) {
           this.activity = res.data.activity
         } else {

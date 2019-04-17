@@ -20,6 +20,7 @@
       <mu-tab>文章</mu-tab>
       <mu-tab>动态</mu-tab>
       <mu-tab>留言</mu-tab>
+      <mu-tab>视频</mu-tab>
     </mu-tabs>
     <!-- page main -->
     <div class="bottom-layout">
@@ -45,14 +46,14 @@
           <mu-list v-if="isLogin" style="padding: 0">
             <mu-list-item class="list-item" v-for="(activityItem, index) in activityList" :ripple="true" button :key="index" @click="linkTo('activity', activityItem._id)">
               <mu-list-item-content>
-                <mu-list-item-title style="text-align: center;">{{ activityItem.content }}<span v-if="isAdmin" style="color: #ccc; margin-left: 10px; cursor: pointer; position: relative; z-index: 10" @click.stop="deleteActivity(activityItem._id)">删除</span></mu-list-item-title>
+                <mu-list-item-title style="text-align: center;">{{ activityItem.content }}<span v-if="isAdmin" style="color: #ccc; margin-left: 10px; cursor: pointer; position: relative; z-index: 10" @click.stop="confirm(activityItem._id)">删除</span></mu-list-item-title>
               </mu-list-item-content>
             </mu-list-item>
           </mu-list>
           <div class="un-login" v-if="!isLogin">
             未登录不能够浏览此内容，请登录
           </div>
-          <div class="no-content" v-if="activityList === 0">
+          <div class="no-content" v-if="activityList.length === 0 && isLogin">
             暂时没有动态
           </div>
         </div>
@@ -71,8 +72,18 @@
           <div class="un-login" v-else>
             未登录不能够浏览此内容，请登录
           </div>
-          <div class="no-content" v-if="messageList === 0">
+          <div class="no-content" v-if="messageList.length === 0 && isLogin">
             暂时没有动态
+          </div>
+        </div>
+        <div v-if="active === 3">
+          <div v-if="isLogin && videoList.length !== 0">
+          </div>
+          <div v-else-if="videoList.length === 0 && isLogin" class="no-content">
+            暂时没有视频
+          </div>
+          <div class="un-login" v-else>
+            未登录不能够浏览此内容，请登录
           </div>
         </div>
       </div>
@@ -91,7 +102,7 @@ export default {
   data () {
     return {
       // 临时ajax请求url
-      url: 'http://localhost:3000/blog/api/',
+      url: 'http://localhost:4000/blog/api/',
       // banner图片 3张
       // bannerImg1: 'https://placem.at/places?w=750&h=400&txt=0',
       // bannerImg2: 'https://placem.at/things?w=750&h=400&txt=0',
@@ -101,6 +112,7 @@ export default {
       activityList: [],
       messageList: [],
       postList: [],
+      videoList: [],
       activity: {
         content: '',
         createAt: ''
@@ -204,7 +216,22 @@ export default {
       })
     },
     deleteActivity (id) {
-      console.log(id)
+      axios.post(`${this.url}activity/delete`, { id }).then(res => {
+        if (res.data.code === 0) {
+          this.message.content = ''
+          this.getActivityList()
+          Toast.success(res.data.message)
+        } else {
+          Toast.success(res.data.message)
+        }
+      })
+    },
+    confirm (id) {
+      this.$confirm('是否要删除这条动态', '注意').then(res => {
+        if (res.result) {
+          this.deleteActivity(id)
+        }
+      })
     }
   }
 }
