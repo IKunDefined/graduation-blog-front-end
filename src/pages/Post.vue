@@ -8,8 +8,7 @@
             <span>发布时间：{{ post.createAt }}</span>
             <span>分类：{{ post.category.name }}</span>
           </div>
-          <div class="content">
-            {{ post.content }}
+          <div class="content" v-html="post.content">
           </div>
           <div class="tag">
             <mu-chip v-for="(item, index) in post.tags" :key="index" color="primary">{{ item.name }}</mu-chip>
@@ -50,12 +49,6 @@
         </mu-card>
       </div>
     </div>
-    <div class="footer">
-      <!-- <span class="iconfont" style="font-size: 20px; position: relative; bottom: 2px; cursor: pointer;">&#xe709;</span>
-      <span class="iconfont" style="font-size: 25px; cursor: pointer;">&#xe608;</span>
-      <span class="iconfont" style="font-size: 25px; position: relative; bottom: 1px; cursor: pointer;">&#xe64e;</span> -->
-      - Blog of IKunDefined -
-    </div>
   </div>
 </template>
 
@@ -78,15 +71,9 @@ export default {
   },
   created () {
     this.postId = location.href.split('?')[1].split('=')[1]
-    let userinfo = this.$cookies.get('userinfo')
-    if (userinfo) {
-      this.isLogin = true
-      this.userId = userinfo._id
-      this.isAdmin = userinfo.isAdmin
-      this.username = userinfo.username
-    }
     this.getPost()
   },
+  props: ['isLogin', 'isAdmin', 'username', 'userId'],
   methods: {
     getPost () {
       axios.get(`http://localhost:4000/blog/api/post/query?id=${this.postId}`).then(res => {
@@ -147,7 +134,6 @@ export default {
 
 <style scoped>
 #post {
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -198,14 +184,5 @@ export default {
 h1 {
   margin: 0;
   text-align: center;
-}
-
-.footer {
-  height: 80px;
-  line-height: 80px;
-  text-align: center;
-  width: 100%;
-  background: #fff;
-  border-top: 1px solid #f5f5f5;
 }
 </style>

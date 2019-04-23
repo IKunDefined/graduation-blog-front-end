@@ -26,7 +26,6 @@
       <mu-tab>动态</mu-tab>
       <mu-tab>留言</mu-tab>
       <mu-tab>视频</mu-tab>
-      <mu-tab>作品</mu-tab>
     </mu-tabs>
     <!-- page main -->
     <div class="bottom-layout">
@@ -135,14 +134,6 @@
             未登录不能够浏览此内容，请登录
           </div>
         </div>
-        <div v-if="active === 4">
-          <div class="no-content">
-            暂时没有内容
-          </div>
-        </div>
-      </div>
-      <div class="footer">
-        - Blog of IKunDefined -
       </div>
     </div>
   </div>
@@ -178,7 +169,7 @@ export default {
       }
     }
   },
-  props: ['isLogin', 'isAdmin'],
+  props: ['isLogin', 'isAdmin', 'username', 'userId'],
   created () {
     this.getPostList()
     this.getActivityList()
@@ -293,7 +284,6 @@ export default {
 
 <style scoped>
 #index {
-  height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -303,15 +293,6 @@ export default {
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
-}
-
-.footer {
-  height: 80px;
-  line-height: 80px;
-  text-align: center;
-  width: 100%;
-  background: #fff;
-  border-top: 1px solid #f5f5f5;
 }
 
 .un-login, .no-content {

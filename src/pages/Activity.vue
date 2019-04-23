@@ -54,9 +54,6 @@
         </mu-card>
       </div>
     </div>
-    <div class="footer">
-      - Blog of IKunDefined -
-    </div>
   </div>
 </template>
 
@@ -75,15 +72,9 @@ export default {
   },
   created () {
     this.activityId = location.href.split('?')[1].split('=')[1]
-    let userinfo = this.$cookies.get('userinfo')
-    if (userinfo) {
-      this.isLogin = true
-      this.userId = userinfo._id
-      this.isAdmin = userinfo.isAdmin
-      this.username = userinfo.username
-    }
     this.getActivity()
   },
+  props: ['isLogin', 'isAdmin', 'username', 'userId'],
   methods: {
     getActivity () {
       axios.get(`http://localhost:4000/blog/api/activity/query?id=${this.activityId}`).then(res => {
@@ -144,7 +135,6 @@ export default {
 
 <style scoped>
 #activity {
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -175,14 +165,5 @@ export default {
 .un-login,
 .no-content {
   margin-top: 20px;
-}
-
-.footer {
-  height: 80px;
-  line-height: 80px;
-  text-align: center;
-  width: 100%;
-  background: #fff;
-  border-top: 1px solid #f5f5f5;
 }
 </style>

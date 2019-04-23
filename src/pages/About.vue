@@ -66,15 +66,11 @@
         </div>
       </div>
     </div>
-    <div class="footer">
-      - Blog of IKunDefined -
-    </div>
   </div>
 </template>
 
 <style scoped>
 #about {
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -112,14 +108,5 @@ h1, h2 {
 
 .character {
   margin-bottom: 0;
-}
-
-.footer {
-  height: 80px;
-  line-height: 80px;
-  text-align: center;
-  width: 100%;
-  background: #fff;
-  border-top: 1px solid #f5f5f5;
 }
 </style>

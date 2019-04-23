@@ -26,7 +26,7 @@
       <mu-button v-if="isLogin" slot="right" color="primary" @click="isPersonalDrawerShow = !isPersonalDrawerShow">{{ username }}</mu-button>
     </mu-appbar>
     <!-- main content -->
-    <router-view :is-login="isLogin" :is-admin="isAdmin"/>
+    <router-view :is-login="isLogin" :is-admin="isAdmin" :username="username" :user-id="userId"/>
     <!-- login dialog -->
     <mu-dialog width="360" transition="slide-bottom" fullscreen :open.sync="isLoginDialogShow">
       <mu-appbar color="primary" title="登录">
