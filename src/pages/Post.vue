@@ -8,10 +8,19 @@
             <span>发布时间：{{ post.createAt }}</span>
             <span>分类：{{ post.category.name }}</span>
           </div>
-          <div class="content" v-html="post.content">
-          </div>
-          <div class="tag">
-            <mu-chip v-for="(item, index) in post.tags" :key="index" color="primary">{{ item.name }}</mu-chip>
+          <post-content :content="post.content"/>
+          <div class="post-bottom">
+            <div>
+              <mu-chip v-for="(item, index) in post.tags" :key="index" color="primary">{{ item.name }}</mu-chip>
+            </div>
+            <mu-button v-if="likeStatus" fab small color="red" @click="like(true)">
+              <mu-icon value="thumb_up"></mu-icon>
+              {{ likeCount }}
+            </mu-button>
+            <mu-button v-else fab small color="gray" @click="like(false)">
+              <mu-icon value="thumb_up"></mu-icon>
+              <span v-if="!(likeCount === 0)">{{ likeCount }}</span>
+            </mu-button>
           </div>
         </div>
         <div class="comment" v-if="isLogin">
@@ -54,8 +63,13 @@
 
 <script>
 import axios from 'axios'
+import Toast from 'muse-ui-toast'
+import PostContent from '../components/PostContent.vue'
 
 export default {
+  components: {
+    PostContent
+  },
   data () {
     return {
       postId: '',
@@ -66,7 +80,9 @@ export default {
         },
         comment: []
       },
-      comment: ''
+      comment: '',
+      likeStatus: false,
+      likeCount: 0
     }
   },
   created () {
@@ -79,6 +95,16 @@ export default {
       axios.get(`http://localhost:4000/blog/api/post/query?id=${this.postId}`).then(res => {
         if (res.data.code === 0) {
           this.post = res.data.post
+          this.post.like.map(item => {
+            if (item.likeStatus) {
+              this.likeCount++
+            }
+          })
+          this.post.like.map(item => {
+            if (item.userId === this.userId) {
+              this.likeStatus = item.likeStatus
+            }
+          })
         } else {
         }
       })
@@ -127,6 +153,30 @@ export default {
         default:
           break
       }
+    },
+    like (status) {
+      if (!this.userId) {
+        Toast.warning('未登录无法点赞')
+      } else {
+        axios.post(`http://localhost:4000/blog/api/post/update`, {
+          id: this.postId,
+          userId: this.userId,
+          username: this.username,
+          status
+        }).then(res => {
+          if (res.data.code === 0) {
+            Toast.success(res.data.message)
+          } else {
+            Toast.warning(res.data.message)
+          }
+        })
+        this.likeStatus = !this.likeStatus
+        if (status) {
+          this.likeCount--
+        } else {
+          this.likeCount++
+        }
+      }
     }
   }
 }
@@ -163,9 +213,9 @@ export default {
   justify-content: center;
 }
 
-.tag {
+.post-bottom {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 .comment {

@@ -25,7 +25,7 @@
       <mu-tab>文章</mu-tab>
       <mu-tab>动态</mu-tab>
       <mu-tab>留言</mu-tab>
-      <mu-tab>视频</mu-tab>
+      <!-- <mu-tab>视频</mu-tab> -->
     </mu-tabs>
     <!-- page main -->
     <div class="bottom-layout">
@@ -124,7 +124,7 @@
             暂时没有动态
           </div>
         </div>
-        <div v-if="active === 3">
+        <!-- <div v-if="active === 3">
           <div v-if="isLogin && videoList.length !== 0">
           </div>
           <div v-else-if="videoList.length === 0 && isLogin" class="no-content">
@@ -133,7 +133,7 @@
           <div class="un-login" v-else>
             未登录不能够浏览此内容，请登录
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

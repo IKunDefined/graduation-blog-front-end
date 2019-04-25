@@ -7,6 +7,7 @@ import Message from '@/pages/Message'
 import Activity from '@/pages/Activity'
 import About from '@/pages/About'
 import Resume from '@/pages/Resume'
+import NotFound from '@/pages/NotFound'
 
 Vue.use(Router)
 
@@ -45,6 +46,11 @@ export default new Router({
       path: '/resume',
       name: 'Resume',
       component: Resume
+    },
+    {
+      path: '*',
+      name: 'NotFound',
+      component: NotFound
     }
   ]
 })

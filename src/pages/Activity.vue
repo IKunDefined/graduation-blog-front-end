@@ -71,6 +71,9 @@ export default {
     }
   },
   created () {
+    if (!this.isLogin) {
+      this.$router.push('index')
+    }
     this.activityId = location.href.split('?')[1].split('=')[1]
     this.getActivity()
   },

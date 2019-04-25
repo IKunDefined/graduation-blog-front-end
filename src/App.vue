@@ -82,9 +82,22 @@
         </mu-button>
       </mu-appbar>
       <div style="padding: 24px;">
-        <div>修改头像</div>
-        <div>修改用户名</div>
-        <div>修改密码</div>
+        <mu-expansion-panel :expand="panel === 'panel1'" @change="toggle('panel1')">
+          <div slot="header">修改头像</div>
+          <mu-button full-width color="primary" @click="updateAvatar">确认上传</mu-button>
+        </mu-expansion-panel>
+        <mu-expansion-panel :expand="panel === 'panel2'" @change="toggle('panel2')">
+          <div slot="header">修改用户名</div>
+          <mu-text-field v-model="reUsername" label="请输入需要更改的用户名" full-width></mu-text-field>
+          <mu-button full-width color="primary" @click="modifyUsername">确认修改</mu-button>
+        </mu-expansion-panel>
+        <mu-expansion-panel :expand="panel === 'panel3'" @change="toggle('panel3')">
+          <div slot="header">修改密码</div>
+          <mu-text-field v-model="password" label="请输入原密码" full-width></mu-text-field>
+          <mu-text-field v-model="rePassword" label="请输入修改密码" full-width></mu-text-field>
+          <mu-text-field v-model="rePasswordConfirm" label="请确认修改密码" full-width></mu-text-field>
+          <mu-button full-width color="primary" @click="modifyPassword">确认修改</mu-button>
+        </mu-expansion-panel>
       </div>
     </mu-dialog>
     <!-- personal sidebar -->
@@ -106,7 +119,7 @@
             进入管理空间
           </mu-list-item-title>
         </mu-list-item>
-        <mu-list-item button @click="confirm">
+        <mu-list-item button @click="confirm('logout')">
           <mu-list-item-action>
             <mu-icon value="power_settings_new"></mu-icon>
           </mu-list-item-action>
@@ -148,7 +161,12 @@ export default {
       },
       isPersonalDrawerShow: false,
       drawerPosition: 'right',
-      isDocked: false
+      isDocked: false,
+      panel: '',
+      reUsername: '',
+      rePassword: '',
+      rePasswordConfirm: '',
+      password: ''
     }
   },
   created () {
@@ -161,6 +179,9 @@ export default {
     }
   },
   methods: {
+    toggle (panel) {
+      this.panel = panel === this.panel ? '' : panel
+    },
     linkTo (page, id) {
       switch (page) {
         case 'index':
@@ -266,13 +287,69 @@ export default {
       window.location.reload()
       Toast.success('注销成功')
     },
-    confirm () {
-      this.$confirm('是否退出登录', '注意').then(res => {
-        if (res.result) {
-          this.logout()
+    confirm (situation) {
+      switch (situation) {
+        case 'logout':
+          this.$confirm('是否退出登录', '注意').then(res => {
+            if (res.result) {
+              this.logout()
+            }
+          })
+          break
+        case 'updateAvatar':
+          this.$confirm('是否上传该头像', '注意').then(res => {
+            if (res.result) {
+              this.updateAvatar()
+            }
+          })
+          break
+        case 'updateUsername':
+          this.$confirm('是否修改为此用户名', '注意').then(res => {
+            if (res.result) {
+              this.modifyUsername()
+            }
+          })
+          break
+        case 'updatePassword':
+          this.$confirm('是否修改为此密码', '注意').then(res => {
+            if (res.result) {
+              this.modifyPassword()
+            }
+          })
+          break
+        default:
+          break
+      }
+    },
+    modifyUsername () {
+      axios.post(`${this.url}user/update`, {
+        id: this.userId,
+        username: this.reUsername,
+        updateUsername: 1
+      }).then(res => {
+        if (res.data.code === 0) {
+          Toast.success(res.data.message)
+        } else {
+          Toast.warning(res.data.message)
         }
       })
-    }
+    },
+    modifyPassword () {
+      axios.post(`${this.url}user/update`, {
+        id: this.userId,
+        password: this.password,
+        rePassword: this.rePassword,
+        rePasswordConfirm: this.rePasswordConfirm,
+        updatePassword: 1
+      }).then(res => {
+        if (res.data.code === 0) {
+          Toast.success(res.data.message)
+        } else {
+          Toast.warning(res.data.message)
+        }
+      })
+    },
+    updateAvatar () {}
   }
 }
 </script>
