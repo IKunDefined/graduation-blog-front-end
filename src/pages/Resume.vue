@@ -83,29 +83,29 @@
             <i class="icon-bookmark"></i>Experience. 项目与工作经验
           </dt>
           <h3>
-            <img src="https://diygod.b0.upaiyun.com/resume-deepin.png" data-action="zoom">
-            <span>深之度科技有限公司（2015.7 - 2015.11）</span>
+            <!-- <img src="https://diygod.b0.upaiyun.com/resume-deepin.png" data-action="zoom"> -->
+            <span>上海未来宽带（2019.1 至今）</span>
           </h3>
           <ul class="exp">
             <li>
               <div class="circle"></div>
-              <h4>深度商店项目</h4>
+              <h4>智慧养老项目</h4>
               <p>
-                负责 Linux deepin
-                <a
+                负责智慧养老项目的微信公众号重构及开发。
+                <!-- <a
                   href="https://www.deepin.org/2015/12/18/deepin-store-v4-0-release-the-best-for-you/"
                   target="_blank"
-                >深度商店V4.0</a> 的前端主要开发工作，项目采用 WebApp 的形式，运行在 Qt WebKit 上，与 deepin 操作系统深度整合，实现一键安装、更新和卸载软件
+                >深度商店V4.0</a> 的前端主要开发工作，项目采用 WebApp 的形式，运行在 Qt WebKit 上，与 deepin 操作系统深度整合，实现一键安装、更新和卸载软件 -->
               </p>
-              <p>使用 AngularJS 框架 和 Sass 预处理器 来实现前端组件及数据交互，使用 webpack 构建</p>
-              <img
+              <p>使用 Vue.js 框架来实现前端组件及数据交互，使用 webpack 构建</p>
+              <!-- <img
                 src="https://diygod.b0.upaiyun.com/resume-dstore.png"
                 data-action="zoom"
                 width="250px"
-              >
+              > -->
             </li>
           </ul>
-          <h3>
+          <!-- <h3>
             <img src="https://diygod.b0.upaiyun.com/resume-dxy.png" data-action="zoom">
             <span>丁香园（2015.12 - 2017.5）</span>
           </h3>
@@ -140,14 +140,14 @@
               <h4>BSC 系统</h4>
               <p>负责丁香园 BSC 系统的全部前端开发工作，BSC 系统是基于 Ant Design 使用 React 开发的一套企业内部绩效考核系统，有考核指标管理、审核、考核进度、评分等功能，满足公司考核员工每个季度工作的需求</p>
             </li>
-          </ul>
+          </ul> -->
           <h3>个人项目</h3>
           <ul class="exp">
             <li>
               <div class="circle"></div>
               <h4>
-                <span>APlayer 音乐播放器</span>
-                <a href="https://github.com/DIYgod/APlayer" target="_blank">
+                <span>Blog of IKunDefined 个人博客系统</span>
+                <!-- <a href="https://github.com/DIYgod/APlayer" target="_blank">
                   <i class="icon-link"></i>源代码
                 </a>
                 <a href="https://aplayer.js.org/" target="_blank">
@@ -159,10 +159,10 @@
                   scrolling="0"
                   width="170px"
                   height="20px"
-                ></iframe>
+                ></iframe> -->
               </h4>
-              <p>炒鸡好看的 HTML5 音乐播放器，支持歌词、播放列表、播放模式（循环播放、随机播放等），兼容现代浏览器和移动端，API 丰富、可扩展性强，Typecho、Hexo、WordPress 平台插件支持</p>
-              <p>
+              <p>为了解Node.js和Express而开发个人博客，现在仍在更新功能中。</p>
+              <!-- <p>
                 曾进入
                 <a
                   href="https://github.com/trending"
@@ -170,13 +170,13 @@
                 >GitHub 热门榜单（GitHub Trending repositories）</a>第八名，Star 数 1.4k+，npm 下载量 17k+
               </p>
               <p>原生 js 编写，无任何依赖，使用 webpack 和 sass 构建</p>
-              <img src="https://diygod.b0.upaiyun.com/resume-aplayer.png" data-action="zoom">
+              <img src="https://diygod.b0.upaiyun.com/resume-aplayer.png" data-action="zoom"> -->
             </li>
             <li>
               <div class="circle"></div>
               <h4>
-                <span>DPlayer 视频弹幕播放器</span>
-                <a href="https://github.com/DIYgod/DPlayer" target="_blank">
+                <span>为毕业设计而制作的个人博客系统</span>
+                <!-- <a href="https://github.com/DIYgod/DPlayer" target="_blank">
                   <i class="icon-link"></i>源代码
                 </a>
                 <a href="http://dplayer.js.org/" target="_blank">
@@ -188,22 +188,20 @@
                   scrolling="0"
                   width="170px"
                   height="20px"
-                ></iframe>
+                ></iframe> -->
               </h4>
               <p>
-                炒鸡好看的 HTML5 视频弹幕播放器，兼容
-                <a href="https://github.com/dailymotion/hls.js" target="_blank">hls.js</a> 和
-                <a href="https://github.com/Bilibili/flv.js" target="_blank">flv.js</a>，兼容现代浏览器和移动端，兼容 bilibili 弹幕，API 丰富、可扩展性强，Typecho、Hexo、Z-BlogPHP、WordPress、Discuz! 平台插件支持
+                前端使用Vue.js构建，CMS使用React构建。
               </p>
-              <p>弹幕后端使用 Node.js 编写，数据库使用 MongoDB，缓存使用 Redis，使用 pm2 部署并支持 Docker，有日志记录功能，可以解析 bilibili 弹幕和视频直链</p>
-              <p>前端使用原生 js 编写，无任何依赖，使用 webpack 和 sass 构建</p>
+              <p>后端使用Node.js + Express + MongoDB的架构构建。</p>
+              <!-- <p>前端使用原生 js 编写，无任何依赖，使用 webpack 和 sass 构建</p>
               <img
                 src="https://diygod.b0.upaiyun.com/resume-dplayer.jpg"
                 data-action="zoom"
                 width="300px"
-              >
+              > -->
             </li>
-            <li>
+            <!-- <li>
               <div class="circle"></div>
               <h4>
                 <span>Resume</span>
@@ -319,7 +317,7 @@
                   <p>封装了百度地图的高精度定位 API</p>
                 </li>
               </ul>
-            </li>
+            </li> -->
           </ul>
         </li>
         <li>
